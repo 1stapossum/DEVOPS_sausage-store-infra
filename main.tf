@@ -12,7 +12,7 @@ resource "yandex_vpc_network" "net1" {
 }
 
 resource "yandex_vpc_subnet" "subnet1" {
-  v4_cidr_blocks = ["10.131.0.0/24"]
+  v4_cidr_blocks = ["10.128.0.0/24"]
   zone           = var.ZONA
   network_id     = "${yandex_vpc_network.net1.id}"
 #  network_id     = "enpv2krbk8skcahr9q5q"
