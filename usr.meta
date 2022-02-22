@@ -1,0 +1,15 @@
+#cloud-config
+users:
+  - name: ansible
+    groups: sudo
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh-authorized-keys:
+     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCZAhQXoi4eErQZ70jGr9avUWjnYK68cSR6oHVCikuebfRdqKoKvo+ah5Q8UWvB3V75hqjFOoVEE8Oz6rGcwtG5/lGkBUlXARp6b4Ofbo2ul124B2eSYZsAuKbJmcxWeMRS0AuoWXjPEJkIX2ybYf7BmHRT6rf9ITj7JinNUz/gLf+EqS/oMHvH48kCwpmp+H0+6KGxuWg1MVTfhGYAqkWtT0RrCoUmexOtqJE0izroPJAPy2tujd0nrEvbtQrBEoWgixQI6dgNWxRaTpx7ViUBUiUPBk2xviRql5YHp4oJKXve2QpZk5q6fMRUfK1PyPCXwC3HfD3GKmSPWskg7AAE92q3jZCgwgWE2RxQbJos5A9VPPHira+ET3cPZ2n2BToYa6Ww0ktOPgPcg2GMvaMETjmx1a1pml3X20xFVfkMHH2idUuKsHly6eX7kUaIwN/83D8RAAOWZLEk48x2R9hp+gqCFVoFazv1WktKB7GqpWz1uXFBBoPPyh+C2mNrFKcttXiTIoilq0mb8utpJb8pFZV+I2NPWvnICvFQjmP2agT8CXfs/g9BEzn7UC8V19N627vkyXZhg8vslLRCGI+arCBu7Nmz5Xuff0iOcTqJNn12yzLF04KqRpU780qepleBol1bgCuo8YGkiQSkcJF/LmpUyk2brpNm2yDZaSyIfQ== student@fhm43ei5mb4tjoq5qqus
+
+  - name: ubuntu
+    groups: sudo
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh-authorized-keys:
+     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCZAhQXoi4eErQZ70jGr9avUWjnYK68cSR6oHVCikuebfRdqKoKvo+ah5Q8UWvB3V75hqjFOoVEE8Oz6rGcwtG5/lGkBUlXARp6b4Ofbo2ul124B2eSYZsAuKbJmcxWeMRS0AuoWXjPEJkIX2ybYf7BmHRT6rf9ITj7JinNUz/gLf+EqS/oMHvH48kCwpmp+H0+6KGxuWg1MVTfhGYAqkWtT0RrCoUmexOtqJE0izroPJAPy2tujd0nrEvbtQrBEoWgixQI6dgNWxRaTpx7ViUBUiUPBk2xviRql5YHp4oJKXve2QpZk5q6fMRUfK1PyPCXwC3HfD3GKmSPWskg7AAE92q3jZCgwgWE2RxQbJos5A9VPPHira+ET3cPZ2n2BToYa6Ww0ktOPgPcg2GMvaMETjmx1a1pml3X20xFVfkMHH2idUuKsHly6eX7kUaIwN/83D8RAAOWZLEk48x2R9hp+gqCFVoFazv1WktKB7GqpWz1uXFBBoPPyh+C2mNrFKcttXiTIoilq0mb8utpJb8pFZV+I2NPWvnICvFQjmP2agT8CXfs/g9BEzn7UC8V19N627vkyXZhg8vslLRCGI+arCBu7Nmz5Xuff0iOcTqJNn12yzLF04KqRpU780qepleBol1bgCuo8YGkiQSkcJF/LmpUyk2brpNm2yDZaSyIfQ== student@fhm43ei5mb4tjoq5qqus
