@@ -1,0 +1,14 @@
+---
+ - name: Deploy sausage store 
+   hosts: all
+   remote_user: ansible
+   # remote_user: user
+   become: yes
+   become_user: root
+   #become_method: sudo
+   vars_files: /home/student/ansible/roles/sausage_store/vars/secret.yml
+   roles:
+      - common
+      - sausage_store
+
+# Весь проект создан опираясь на пример Wordpress из урока. Деплоится на 84.201.176.232.  10.129.0.5. Но в моем облаке из-за умершей ВМ. (со всеми данными) (((

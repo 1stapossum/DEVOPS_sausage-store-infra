@@ -1,0 +1,39 @@
+
+- name: update_cache
+  apt:
+    force_apt_get: yes
+    update_cache: yes
+    upgrade: full
+    
+- name: Create group jarservice
+  group:
+    name: jarservice
+    state: present
+
+- name: Adding user jarservice
+  user:
+    name: jarservice
+    groups: sudo,www-data
+    append: yes
+
+- name: Adding user www-www
+  user:
+    name: www-www
+    groups: sudo,www-data,jarservice
+    append: yes
+
+- name: Create a directory www-data
+  file:
+    path: /var/www-data
+    state: directory
+    mode: "0755"
+    owner: www-data
+    group: www-data
+
+- name: Create a directory log
+  file:
+    path: /home/jarservice/log
+    state: directory
+    mode: "0755"
+    owner: jarservice
+    group: jarservice

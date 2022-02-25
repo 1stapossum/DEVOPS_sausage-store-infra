@@ -1,0 +1,66 @@
+---
+- name: Install a list of packages
+  apt:
+    name: "{{packages}}"
+    state: present
+
+- name: Preparing NodeJS installation
+  shell: curl -fsSL https://deb.nodesource.com/setup_16.x > /tmp/nodejsinstall && chmod +x /tmp/nodejsinstall && sh /tmp/nodejsinstall #| bash - && apt-get install -y nodejs
+
+- name: Install NodeJS
+  apt: 
+    name: nodejs
+  
+
+- name: Intalling http-server
+  npm:
+    name: http-server
+    global: yes
+    state: present
+
+
+- maven_artifact:
+    group_id: "{{mvn_group}}"
+    artifact_id: "{{artifact_id}}"
+    version: "{{version}}"
+    repository_url: "{{nexus_url_b}}"
+    mode: "0755"
+    username: "{{nexus_usr}}"
+    password: "{{nexus_pswd}}"
+    dest: /home/jarservice
+    owner: jarservice
+    group: jarservice
+   
+- name: download
+  get_url:
+    url: "{{nexus_url_a}}"
+    username: "{{nexus_usr}}"
+    password: "{{nexus_pswd}}"
+    dest: /var/www-data
+   # я почему-то решил что выкачан должен быть последний релиз..и 2 дня изучал REST API NEXUSa....
+
+- name: Extract archive
+  unarchive:
+   src: /var/www-data/sausage-store-{{version}}.tar.gz
+   dest: /var/www-data
+   extra_opts: [--strip-components=1]
+   remote_src: yes
+   owner: www-data
+   group: www-data
+
+- name: Copy backend Unit
+  copy: src=sausage-store-backend.service dest=/etc/systemd/system
+
+- name: Copy frontend Unit
+  copy: src=sausage-store-front.service dest=/etc/systemd/system
+
+
+- name: Start backend
+  service: name=sausage-store-backend state=started enabled=yes
+
+- name: Start frontend
+  service: name=sausage-store-front state=started enabled=yes
+
+
+
+
