@@ -3,6 +3,7 @@ packages:
     - openjdk-16-jre
     - python3-lxml
     - openjdk-16-jdk
+    - npm
     
 
 
