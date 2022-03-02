@@ -1,0 +1,2 @@
+ansiblevm ansible_ssh_host=10.129.0.9 ansible_ssh_user=ansible         
+         

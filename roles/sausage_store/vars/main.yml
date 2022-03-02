@@ -1,0 +1,10 @@
+## List of packages
+packages:
+    - openjdk-16-jre
+    - python3-lxml
+    - openjdk-16-jdk
+    - npm
+    
+
+
+version: 	1.0.26200 
