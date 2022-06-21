@@ -26,3 +26,4 @@ sausage-store-deploy:
   environment:
      name: PRODUCTION
      url: https://02-aleksandr-volokhov.k8s.praktikum-services.tech/
+#!!
