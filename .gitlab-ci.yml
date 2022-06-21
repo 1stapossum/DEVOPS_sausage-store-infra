@@ -19,4 +19,10 @@ sausage-store-deploy:
     - kubectl  apply -f kubernetes/backend-report/ --kubeconfig=kubeconfig
     - kubectl  apply -f kubernetes/frontend/ --kubeconfig=kubeconfig
     - rm -f kubeconfig
-
+  rules:
+  - changes:
+    - kubernetes/**/*
+    - .gitlab-ci.yml
+  environment:
+     name: PRODUCTION
+     url: https://02-aleksandr-volokhov.k8s.praktikum-services.tech/
