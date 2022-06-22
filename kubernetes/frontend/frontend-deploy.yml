@@ -5,7 +5,8 @@ metadata:
   labels: 
     app: frontend 
 spec: 
-  replicas: 1 
+  replicas: 1
+  revisionHistoryLimit: 15
   strategy: 
     type: Recreate 
   selector: 
