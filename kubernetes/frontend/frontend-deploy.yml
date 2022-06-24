@@ -22,7 +22,7 @@ spec:
       containers: 
         - image: gitlab.praktikum-services.ru:5050/antinitrino/sausage-store/sausage-frontend:latest
           name: frontend 
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           volumeMounts: 
             - name: frontend 
               mountPath: /etc/nginx/nginx.conf 
@@ -47,3 +47,14 @@ spec:
                 path: nginx.conf 
       imagePullSecrets: 
         - name: docker-config-secret
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                # предпочтение по развертыванию в определенной зоне             
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - frontend 

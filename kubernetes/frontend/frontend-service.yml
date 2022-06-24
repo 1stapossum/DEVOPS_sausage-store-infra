@@ -21,10 +21,10 @@ metadata:
 spec:
   # В кластере может быть несколько Ingress Controllers, мы используем NGINX
   ingressClassName: "nginx"
-  tls:
-    - secretName: 
-      hosts:
-        - "02-aleksandr-volokhov.k8s.praktikum-services.tech"
+#  tls:
+#    - secretName: 
+#      host:
+#        - "02-aleksandr-volokhov.k8s.praktikum-services.tech"
   rules:
     # Хост определяет правило направления траффика по доменному имени
   - host: "02-aleksandr-volokhov.k8s.praktikum-services.tech"
