@@ -22,9 +22,9 @@ sausage-store-deploy:
     
   script:
     #- helm repo add nexus https://nexus.praktikum-services.ru/repository/sausage-store-alexander_volokhov_helm/ --username antinitrino --password WAEPYltA
-    - helm repo add nexus $NEXUX_REPO_URL --username $NEXUS_REPO_USER --password $NEXUS_REPO_USER
+    - helm repo add nexus $NEXUX_REPO_URL --username $NEXUS_REPO_USER --password $NEXUS_REPO_PASS
     - helm repo update
-    - helm upgrade --install sausage-store sausage-store --version 0.1.2  --username ${NEXUS_REPO_USER} --password ${NEXUS_REPO_USER} --atomic
+    - helm upgrade --install sausage-store sausage-store --version 0.1.2  --username ${NEXUS_REPO_USER} --password ${NEXUS_REPO_PASS} --atomic
     - rm -f kubeconfig
   rules:
     - changes:
