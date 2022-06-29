@@ -14,9 +14,11 @@ sausage-store-deploy:
     - cp kubectl /usr/local/bin/
     - chmod +x /usr/local/bin/kubectl
     - echo "$KUBECONFIG" >> kubeconfig
+    - export KUBECONFIG=kubeconfig
     - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
     - chmod 777 get_helm.sh
     - ./get_helm.sh
+    
   script:
     - helm repo add nexus ${NEXUX_REPO_URL} --username ${NEXUS_REPO_USER} --password ${NEXUS_REPO_USER}
     - helm repo update
