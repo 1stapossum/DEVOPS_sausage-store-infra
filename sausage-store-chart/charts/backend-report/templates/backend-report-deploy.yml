@@ -1,0 +1,83 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-report
+  labels:
+    app: backend-report
+spec:
+  replicas: 1
+  revisionHistoryLimit: 15
+  # Стратегия развёртывания. Recreate — удалит сначала все старые поды 
+  # Есть и более гибкая стратегии, например, RollingUpdate, которая будет обновлять поды порциями  
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: backend-report
+  template:
+    metadata:
+      labels:
+        app: backend-report
+        pp.kubernetes.io/instance: "{{ .Release.Name }}"
+        app.kubernetes.io/version: "{{ .Chart.AppVersion }}"
+        app.kubernetes.io/managed-by: "{{ .Release.Service }}"
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      containers:
+        - name: backend-report
+          image: gitlab.praktikum-services.ru:5050/antinitrino/sausage-store/backend-report:latest
+          imagePullPolicy: {{ .Values.imagepullpolicy}}
+          resources:
+           requests:
+                memory: {{ .Values.requests_memory }}
+                cpu: {{ .Values.requests_cpu}}
+           limits:
+                memory: {{ .Values.limits_memory}}
+                cpu: {{ .Values.limits_cpu}}
+          env:
+            - name: VAULT_HOST
+              value: {{ .Values.vault_host }}
+            - name: VAULT_DEV_ROOT_TOKEN_ID
+              valueFrom:
+                secretKeyRef:
+                  name: vault
+                  key: VAULT_DEV_ROOT_TOKEN_ID
+          ports:
+            - name: backend-report
+              containerPort: 8081
+      imagePullSecrets:
+        - name: docker-config-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-report
+  labels:
+    app: backend-report
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: backend-report
+
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: backend-report-hpa
+  labels:
+    app: backend-report
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backend-report
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 75
+          

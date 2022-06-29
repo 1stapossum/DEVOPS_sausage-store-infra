@@ -1,0 +1,24 @@
+backend:
+  image: gitlab.praktikum-services.ru:5050/antinitrino/sausage-store/sausage-backend
+  tag: latest
+  replicas: 2
+  vault_host: 51.250.82.30
+  containerport: 8080
+  minallowed_cpu: 0
+  minallowed_memory: 0
+  maxallowed_cpu: 1000
+  maxallowed_memory: 512
+
+frontend:
+  fqdn: 02-aleksandr-volokhov.k8s.praktikum-services.tech
+
+backend-report:
+  vault_host: 51.250.82.30
+  replicas: 1
+  imagepullpolicy: Always
+  requests_memory: 64Mi
+  requests_cpu: 100m
+  limits_memory: 256Mi
+  limits_cpu: 1000m
+    
+
