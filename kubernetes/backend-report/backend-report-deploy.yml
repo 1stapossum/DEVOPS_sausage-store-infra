@@ -7,6 +7,7 @@ metadata:
     app: backend-report
 spec:
   replicas: 1
+  revisionHistoryLimit: 15
   # Стратегия развёртывания. Recreate — удалит сначала все старые поды 
   # Есть и более гибкая стратегии, например, RollingUpdate, которая будет обновлять поды порциями  
   strategy:
@@ -22,7 +23,14 @@ spec:
       containers:
         - name: backend-report
           image: gitlab.praktikum-services.ru:5050/antinitrino/sausage-store/backend-report:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
+          resources:
+           requests:
+                memory: "256Mi"
+                cpu: "100m"
+           limits:
+                memory: "512Mi"
+                cpu: "200m"
           env:
             - name: VAULT_HOST
               value: 51.250.82.30
@@ -53,3 +61,19 @@ spec:
   selector:
     app: backend-report
 
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: backend-report-hpa
+  labels:
+    app: backend-report
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backend-report
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 75
+          
