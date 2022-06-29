@@ -5,7 +5,7 @@ stages:
   - deploy
 
 sausage-store-deploy:
-  image: alpine:3.15.0
+  image: ubuntu:16.04
   stage: deploy
 #  when: manual
   before_script:
