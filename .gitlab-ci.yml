@@ -9,7 +9,7 @@ sausage-store-deploy:
   stage: deploy
 #  when: manual
   before_script:
-    - apk add --no-cache curl
+    - apt-get install -y curl
     - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
     - cp kubectl /usr/local/bin/
     - chmod +x /usr/local/bin/kubectl
