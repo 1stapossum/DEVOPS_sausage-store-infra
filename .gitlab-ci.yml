@@ -14,6 +14,7 @@ sausage-store-deploy:
     - cp kubectl /usr/local/bin/
     - chmod +x /usr/local/bin/kubectl
     - echo "$KUBECONFIG" >> kubeconfig
+    - chmod 400 kubeconfig
     - export KUBECONFIG=kubeconfig
     - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
     - chmod 700 get_helm.sh
