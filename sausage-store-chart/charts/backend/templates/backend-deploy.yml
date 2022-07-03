@@ -1,0 +1,92 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: backend
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/version: "{{ .Chart.AppVersion }}"
+    app.kubernetes.io/managed-by: "{{ .Release.Service }}"
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+spec:
+  replicas: {{ .Values.replicas }}
+  revisionHistoryLimit: 15
+  # Стратегия развёртывания. Recreate — удалит сначала все старые поды 
+  # Есть и более гибкая стратегии, например, RollingUpdate, которая будет обновлять поды порциями  
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 20
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: "{{ .Values.image }}:{{ .Values.tag }}"
+          imagePullPolicy: Always
+          env:
+            - name: VAULT_HOST
+              value: {{ .Values.vault_host }}
+            - name: VAULT_DEV_ROOT_TOKEN_ID
+              valueFrom:
+                secretKeyRef:
+                  name: vault
+                  key: VAULT_DEV_ROOT_TOKEN_ID
+            - name: PSQL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: backend
+                  key: PSQL_HOST
+            - name: PSQL_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: backend
+                  key: PSQL_PORT
+            - name: PSQL_DBNAME
+              valueFrom:
+                secretKeyRef:
+                  name: backend
+                  key: PSQL_DBNAME
+          ports:
+            - name: backend
+              containerPort: {{ .Values.containerport }}
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 1
+            failureThreshold: 6
+      imagePullSecrets:
+        - name: docker-config-secret
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: backend-vpa
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backend
+  updatePolicy:
+    updateMode: Auto
+  resourcePolicy:
+    containerPolicies:
+      - containerName: "*"
+        minAllowed:
+          cpu: {{ .Values.minallowed_cpu}}
+          memory: {{ .Values.minallowed_memory}}
+        maxAllowed:
+          cpu: {{ .Values.maxallowed_cpu}}
+          memory: {{ .Values.maxallowed_memory}}
+        controlledResources: ["cpu", "memory"]
+        controlledValues: RequestsAndLimits

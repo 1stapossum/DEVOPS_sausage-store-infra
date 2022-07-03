@@ -5,19 +5,25 @@ stages:
   - deploy
 
 sausage-store-deploy:
-  image: alpine:3.15.0
+  image: ubuntu:16.04
   stage: deploy
 #  when: manual
   before_script:
-    - apk add --no-cache curl
+    - apt-get update && apt-get install -y curl
     - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
     - cp kubectl /usr/local/bin/
     - chmod +x /usr/local/bin/kubectl
     - echo "$KUBECONFIG" >> kubeconfig
+    - chmod 400 kubeconfig
+    - export KUBECONFIG=kubeconfig
+    - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    - chmod 700 get_helm.sh
+    - ./get_helm.sh
+    
   script:
-    - kubectl  apply -f kubernetes/backend/ --kubeconfig=kubeconfig
-    - kubectl  apply -f kubernetes/backend-report/ --kubeconfig=kubeconfig
-    - kubectl  apply -f kubernetes/frontend/ --kubeconfig=kubeconfig
+    - helm repo add nexus $NEXUX_REPO_URL --username $NEXUS_REPO_USER --password $NEXUS_REPO_PASS
+    - helm repo update
+    - helm upgrade --install sausage-store nexus/sausage-store --version 0.1.2 --username $NEXUS_REPO_USER --password $NEXUS_REPO_PASS --atomic
     - rm -f kubeconfig
   rules:
     - changes:
