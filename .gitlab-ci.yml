@@ -11,8 +11,16 @@ sausage-store-deploy:
 
     
   script:
+#backend
   - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set sausage-store-alexander-volokhov -p backend.image=gitlab.praktikum-services.ru:5050/antinitrino/sausage-store/sausage-backend
   - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app sync sausage-store-alexander-volokhov 
+#backend-report  
+  - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set sausage-store-alexander-volokhov -p backend.image=gitlab.praktikum-services.ru:5050/antinitrino/sausage-store/backend-report
+  - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app sync sausage-store-alexander-volokhov 
+#frontend
+  - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set sausage-store-alexander-volokhov -p backend.image=gitlab.praktikum-services.ru:5050/antinitrino/sausage-store/sausage-frontend
+  - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app sync sausage-store-alexander-volokhov 
+
   rules:
     - changes:
       - kubernetes/**/*
