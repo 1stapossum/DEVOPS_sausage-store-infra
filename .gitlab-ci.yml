@@ -12,15 +12,15 @@ sausage-store-deploy:
     
   script:
 #backend
-  - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set sausage-store-alexander-volokhov -p backend.image=gitlab.praktikum-services.ru:5050/antinitrino/sausage-store/sausage-backend
+  - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set $ARGO_APPNAME -p backend.image=gitlab.praktikum-services.ru:5050/antinitrino/sausage-store/sausage-backend
 #  - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app sync sausage-store-alexander-volokhov 
 #backend-report  
-  - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set sausage-store-alexander-volokhov -p backend-report.image=gitlab.praktikum-services.ru:5050/antinitrino/sausage-store/backend-report
+  - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set $ARGO_APPNAME -p backend-report.image=gitlab.praktikum-services.ru:5050/antinitrino/sausage-store/backend-report
 #  - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app sync sausage-store-alexander-volokhov 
 #frontend
-  - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set sausage-store-alexander-volokhov -p frontend.image=gitlab.praktikum-services.ru:5050/antinitrino/sausage-store/sausage-frontend
+  - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set $ARGO_APPNAME -p frontend.image=gitlab.praktikum-services.ru:5050/antinitrino/sausage-store/sausage-frontend
 #SYNC APP
-  - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app sync sausage-store-alexander-volokhov 
+  - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app sync $ARGO_APPNAME
 
   rules:
     - changes:
